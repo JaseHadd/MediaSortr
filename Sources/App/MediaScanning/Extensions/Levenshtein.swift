@@ -34,23 +34,23 @@ extension String {
         let (sourceLength, targetLength) = (source.count, target.count)
         var distance = Matrix(rows: targetLength + 1, columns: sourceLength + 1, initialValue: 0)
 
-        for x in 1...sourceLength {
-            distance[0, x] = x
+        for sourceIndex in 1...sourceLength {
+            distance[0, sourceIndex] = sourceIndex
         }
-        for y in 1...targetLength {
-            distance[y, 0] = y
+        for targetIndex in 1...targetLength {
+            distance[targetIndex, 0] = targetIndex
         }
-        for x in 1...sourceLength {
-            for y in 1...targetLength {
-                if source[x - 1] == target[y - 1] {
+        for sourceIndex in 1...sourceLength {
+            for targetIndex in 1...targetLength {
+                if source[sourceIndex - 1] == target[targetIndex - 1] {
                     // same character
-                    distance[y, x] = distance[y - 1, x - 1]
+                    distance[targetIndex, sourceIndex] = distance[targetIndex - 1, sourceIndex - 1]
                 } else {
-                    let deletions = distance[y, x - 1] + 1
-                    let insertions = distance[y - 1, x] + 1
-                    let substitutions = distance[y - 1, x - 1] + 1
+                    let deletions = distance[targetIndex, sourceIndex - 1] + 1
+                    let insertions = distance[targetIndex - 1, sourceIndex] + 1
+                    let substitutions = distance[targetIndex - 1, sourceIndex - 1] + 1
 
-                    distance[y, x] = min(min(insertions, deletions), substitutions)
+                    distance[targetIndex, sourceIndex] = min(min(insertions, deletions), substitutions)
                 }
             }
         }

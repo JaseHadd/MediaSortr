@@ -1,8 +1,13 @@
 import FluentPostgreSQL
+import Configuration
 import Vapor
 
 /// Called before your application initializes.
 public func configure(_ config: inout Config, _ env: inout Environment, _ services: inout Services) throws {
+    /// Let's load config from IBM's Configuration Manager
+    let configManager = ConfigurationManager()
+    configManager.load(file: "config.json").load(.environmentVariables).load(.commandLineArguments)
+    
     /// Register providers first
     try services.register(FluentPostgreSQLProvider())
 
